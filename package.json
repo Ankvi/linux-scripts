@@ -1,0 +1,26 @@
+{
+    "name": "linux-scripts",
+    "module": "src/index.ts",
+    "bin": {
+        "linux-scripts": "src/index.ts",
+        "lsc": "src/index.ts"
+    },
+    "type": "module",
+    "devDependencies": {
+        "@biomejs/biome": "^1.8.3",
+        "@types/node": "^22.5.4",
+        "bun-types": "^1.1.27"
+    },
+    "peerDependencies": {
+        "typescript": "^5.5.4"
+    },
+    "dependencies": {
+        "commander": "^12.1.0",
+        "winston": "^3.14.2"
+    },
+    "scripts": {
+        "lint:ts": "bun --bun tsc --noEmit",
+        "check": "biome check",
+        "check:fix": "biome check --write"
+    }
+}
