@@ -12,7 +12,9 @@
     "files": {
         "ignore": ["**/node_modules", "**/output", "**/.eslintrc.js"]
     },
-    "organizeImports": { "enabled": true },
+    "organizeImports": {
+        "enabled": true
+    },
     "linter": {
         "enabled": true,
         "rules": {
