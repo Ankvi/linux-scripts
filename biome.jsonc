@@ -1,19 +1,10 @@
 {
     "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-    "formatter": {
-        "enabled": true,
-        "formatWithErrors": false,
-        "indentStyle": "space",
-        "indentWidth": 4,
-        "lineEnding": "lf",
-        "lineWidth": 80,
-        "attributePosition": "auto"
-    },
-    "files": {
-        "ignore": ["**/node_modules", "**/output", "**/.eslintrc.js"]
-    },
     "organizeImports": {
         "enabled": true
+    },
+    "files": {
+        "ignore": ["**/node_modules", "**/output"]
     },
     "linter": {
         "enabled": true,
@@ -21,17 +12,10 @@
             "recommended": true
         }
     },
-    "javascript": {
-        "formatter": {
-            "jsxQuoteStyle": "double",
-            "quoteProperties": "asNeeded",
-            "trailingCommas": "all",
-            "semicolons": "always",
-            "arrowParentheses": "always",
-            "bracketSpacing": true,
-            "bracketSameLine": false,
-            "quoteStyle": "double",
-            "attributePosition": "auto"
-        }
+    "formatter": {
+        "enabled": true,
+        "formatWithErrors": false,
+        "attributePosition": "auto",
+        "useEditorconfig": true
     }
 }
