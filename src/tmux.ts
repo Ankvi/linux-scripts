@@ -23,30 +23,32 @@ const cidFolder = `${elkjopFolder}/CID`;
 export const sessions: Session[] = [
     {
         name: "Flash",
-        folders: [`${elkjopFolder}/flash`],
+        folders: [{ path: `${elkjopFolder}/flash`, name: "flash" }],
     },
     {
         name: "CID",
         folders: [
-            `${cidFolder}/IdentityService`,
+            { path: `${cidFolder}/IdentityService`, name: "IdentityService" },
             { path: `${cidFolder}/IdentityMasterService`, name: "IMS" },
-            `${cidFolder}/IdentityService2024`,
             { path: `${cidFolder}/customer-identity-admin`, name: "CIA" },
-            `${cidFolder}/AzureADB2CService`,
+            {
+                path: `${cidFolder}/AzureADB2CService`,
+                name: "AzureADB2CService",
+            },
             {
                 path: `${cidFolder}/azure-ad-b2c-policies`,
-                name: "adb2c policies",
+                name: "ADB2C Policies",
             },
-            { path: `${cidFolder}/azure-ad-b2c-ui`, name: "adb2c ui" },
+            { path: `${cidFolder}/azure-ad-b2c-ui`, name: "ADB2C UI" },
         ],
     },
     {
         name: "Private",
         folders: [
-            `${gitFolder}/Ankvi/dotfiles`,
-            `${gitFolder}/Ankvi/neovim-config`,
-            `${gitFolder}/Ankvi/linux-scripts`,
-            `${gitFolder}/Ankvi/timetracking`,
+            { path: `${gitFolder}/Ankvi/dotfiles`, name: "dotfiles" },
+            { path: `${gitFolder}/Ankvi/neovim-config`, name: "neovim-config" },
+            { path: `${gitFolder}/Ankvi/linux-scripts`, name: "linux-scripts" },
+            { path: `${gitFolder}/Ankvi/timetracking`, name: "timetracking" },
             { path: `${Bun.env.HOME}/vaults`, name: "Obsidian Vaults" },
         ],
     },
@@ -54,8 +56,7 @@ export const sessions: Session[] = [
 
 async function startTmuxSessions() {
     try {
-        const proc = Bun.spawn(["tmux", "ls", "-F", "#{session_name}"]);
-        const text = await new Response(proc.stdout).text();
+        const text = await $`tmux ls -F #{session_name}`.text();
         const activeSessions = text.trim().split("\n");
         logger.info("Found sessions: ", activeSessions);
 
@@ -90,36 +91,12 @@ async function setupTmuxWindow(
 
     if (index) {
         await $`tmux new-window -d -t ${sessionName} -n ${windowName}`;
-        // await Bun.spawn([
-        //     "tmux",
-        //     "new-window",
-        //     "-d",
-        //     "-t",
-        //     sessionName,
-        //     "-n",
-        //     windowName,
-        // ]).exited;
     } else {
         await $`tmux rename-window -t ${sessionName} ${windowName}`;
-        // await Bun.spawn([
-        //     "tmux",
-        //     "rename-window",
-        //     "-t",
-        //     sessionName,
-        //     windowName,
-        // ]).exited;
     }
 
     const folderPath = typeof folder === "string" ? folder : folder.path;
     return await $`tmux send-keys -t ${sessionName} "cd ${folderPath}; clear" C-m`;
-    // return Bun.spawn([
-    //     "tmux",
-    //     "send-keys",
-    //     "-t",
-    //     sessionName,
-    //     `cd ${folderPath}; clear`,
-    //     "C-m",
-    // ]).exited;
 }
 
 export const tmux = new Command("tmux");
