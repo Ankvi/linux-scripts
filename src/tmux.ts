@@ -55,11 +55,17 @@ export const sessions: Session[] = [
 ];
 
 async function startTmuxSessions() {
+    let activeSessions: string[] = [];
+
     try {
         const text = await $`tmux ls -F #{session_name}`.text();
-        const activeSessions = text.trim().split("\n");
+        activeSessions = text.trim().split("\n");
         logger.info("Found sessions: ", activeSessions);
+    } catch {
+        logger.info("No existing sessions");
+    }
 
+    try {
         for (const session of sessions) {
             if (activeSessions.includes(session.name)) {
                 logger.info(`Session ${session.name} already exists, skipping`);
