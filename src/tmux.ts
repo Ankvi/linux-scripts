@@ -4,12 +4,10 @@ import { Command } from "commander";
 import { getCurrentBranch } from "./git";
 import { logger } from "./logging";
 
-type Folder =
-    | string
-    | {
-          path: string;
-          name: string;
-      };
+type Folder = {
+    path: string;
+    name: string;
+};
 
 type Session = {
     name: string;
@@ -26,7 +24,7 @@ export const sessions: Session[] = [
         folders: [{ path: `${elkjopFolder}/flash`, name: "flash" }],
     },
     {
-        name: "CID",
+        name: "Customer Identity",
         folders: [
             { path: `${cidFolder}/IdentityService`, name: "IdentityService" },
             { path: `${cidFolder}/IdentityMasterService`, name: "IMS" },
@@ -91,18 +89,14 @@ async function setupTmuxWindow(
     index: number,
 ) {
     const sessionName = `${session.name}:${index + 1}`;
-    const windowName =
-        // biome-ignore lint/style/noNonNullAssertion: <explanation>
-        typeof folder === "string" ? folder.split("/").pop()! : folder.name;
 
     if (index) {
-        await $`tmux new-window -d -t ${sessionName} -n ${windowName}`;
+        await $`tmux new-window -d -t ${sessionName} -n ${folder.name}`;
     } else {
-        await $`tmux rename-window -t ${sessionName} ${windowName}`;
+        await $`tmux rename-window -t ${sessionName} ${folder.name}`;
     }
 
-    const folderPath = typeof folder === "string" ? folder : folder.path;
-    return await $`tmux send-keys -t ${sessionName} "cd ${folderPath}; clear" C-m`;
+    return await $`tmux send-keys -t ${sessionName} "cd ${folder.path}; clear" C-m`;
 }
 
 export const tmux = new Command("tmux");

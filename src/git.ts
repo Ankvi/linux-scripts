@@ -24,9 +24,7 @@ git.command("clone <account> <repo>")
 
 export async function getCurrentBranch(directory?: string) {
     try {
-        const branch = await $.cwd(
-            directory,
-        )`git rev-parse --abbrev-ref HEAD`.text();
+        const branch = await $.cwd(directory)`git branch --show-current`.text();
         return branch.trim();
     } catch {
         return;
