@@ -7,9 +7,9 @@
     },
     "type": "module",
     "devDependencies": {
-        "@biomejs/biome": "^1.9.3",
+        "@biomejs/biome": "^1.9.4",
         "@types/bun": "^1.1.11",
-        "@types/node": "^22.7.5"
+        "@types/node": "^22.7.7"
     },
     "peerDependencies": {
         "typescript": "^5.6.3"
