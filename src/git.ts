@@ -7,7 +7,7 @@ git.command("clone <account> <repo>")
     .option("-o, --output [path]", "Clone output directory")
     .action(
         async (account: string, repo: string, options: { output?: string }) => {
-            const url = `git@github.com:${account}/${repo}`;
+            const url = `https://github.com/${account}/${repo}`;
 
             let outputDir = options.output ?? "";
 
