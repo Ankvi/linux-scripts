@@ -24,7 +24,7 @@ export const sessions: Session[] = [
         folders: [{ path: `${elkjopFolder}/flash`, name: "flash" }],
     },
     {
-        name: "Customer Identity",
+        name: "CID",
         folders: [
             { path: `${cidFolder}/IdentityService`, name: "IdentityService" },
             { path: `${cidFolder}/IdentityMasterService`, name: "IMS" },
