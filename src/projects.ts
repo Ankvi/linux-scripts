@@ -33,6 +33,24 @@ async function getGitRepositoriesInFolderRecursively(
     return repositories;
 }
 
+type ProjectsOpts = {
+    tmux?: boolean;
+};
+
+async function getProjectFolders(opts: ProjectsOpts) {
+    if (opts.tmux) {
+        return sessions
+            .flatMap((session) => session.folders)
+            .map((folder) => folder.path);
+    }
+
+    const repos = await getGitRepositoriesInFolderRecursively({
+        parentPath: gitFolder,
+        name: "github.com",
+    });
+    return repos.map((repo) => getFullPath(repo));
+}
+
 export const projects = new Command("projects");
 
 projects.command("list").action(async () => {
@@ -46,39 +64,57 @@ projects.command("list").action(async () => {
     }
 });
 
-projects.command("synchronize").action(async () => {
-    const paths = sessions
-        .flatMap((session) => session.folders)
-        .map((folder) => (typeof folder === "string" ? folder : folder.path));
+projects
+    .command("synchronize")
+    .option("--tmux", "Use tmux sessions")
+    .action(async (opts: ProjectsOpts) => {
+        const paths = await getProjectFolders(opts);
 
-    logger.debug(`Found a total of ${paths.length} projects`);
+        logger.debug(`Found a total of ${paths.length} projects`);
 
-    const projectsToBeSynchronized = (
+        const projectsToBeSynchronized = (
+            await Promise.all(
+                paths.map(async (path) => {
+                    if (await hasModifiedFiles(path)) {
+                        return "";
+                    }
+
+                    return path;
+                }),
+            )
+        ).filter((path) => path.length > 0);
+
+        logger.info(
+            `Synchronizing ${projectsToBeSynchronized.length} projects`,
+        );
+
+        await Promise.all(
+            projectsToBeSynchronized.map(async (path) => {
+                try {
+                    await $.cwd(path)`git pull`.quiet();
+                } catch (error) {
+                    if (error instanceof Error) {
+                        logger.error("Unable to synchronize project", error);
+                    }
+                }
+            }),
+        );
+    });
+
+projects
+    .command("list-modified-projects")
+    .option("--tmux", "Use tmux sessions")
+    .action(async (opts: ProjectsOpts) => {
+        const paths = await getProjectFolders(opts);
+
         await Promise.all(
             paths.map(async (path) => {
                 if (await hasModifiedFiles(path)) {
-                    return "";
+                    console.log(path);
                 }
-
-                return path;
             }),
-        )
-    ).filter((path) => path.length > 0);
-
-    logger.info(`Synchronizing ${projectsToBeSynchronized.length} projects`);
-
-    await Promise.all(
-        projectsToBeSynchronized.map(async (path) => {
-            try {
-                await $.cwd(path)`git pull`.quiet();
-            } catch (error) {
-                if (error instanceof Error) {
-                    logger.error("Unable to synchronize project", error);
-                }
-            }
-        }),
-    );
-});
+        );
+    });
 
 projects.command("select").action(async () => {
     const repos = await getGitRepositoriesInFolderRecursively({
