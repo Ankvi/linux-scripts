@@ -1,7 +1,19 @@
 import { $ } from "bun";
+import { Command } from "commander";
 
-export async function connectToDevice() {
-    const selected = await $`bluetoothctl devices | fzf`.text();
+type Opts = {
+    gui?: boolean;
+};
+
+export async function connectToDevice(opts: Opts) {
+    let selected: string | undefined;
+
+    if (opts.gui) {
+        selected = await $`bluetoothctl devices | wofi --dmenu`.text();
+    } else {
+        selected = await $`bluetoothctl devices | fzf`.text();
+    }
+
     if (!selected) {
         console.log("Nothing selected. Exiting");
         return;
@@ -11,8 +23,16 @@ export async function connectToDevice() {
     await $`bluetoothctl connect ${address}`;
 }
 
-export async function disconnectFromDevice() {
-    const selected = await $`bluetoothctl devices Connected | fzf`.text();
+export async function disconnectFromDevice(opts: Opts) {
+    let selected: string | undefined;
+
+    if (opts.gui) {
+        selected =
+            await $`bluetoothctl devices Connected | wofi --dmenu`.text();
+    } else {
+        selected = await $`bluetoothctl devices Connected | fzf`.text();
+    }
+
     if (!selected) {
         console.log("Nothing selected. Exiting");
         return;
@@ -24,3 +44,14 @@ export async function disconnectFromDevice() {
     );
     await $`bluetoothctl disconnect ${address}`;
 }
+
+export const bluetooth = new Command("bluetooth");
+
+bluetooth
+    .command("connect")
+    .option("--gui", "Select using wofi instead of fzf")
+    .action(connectToDevice);
+bluetooth
+    .command("disconnect")
+    .option("--gui", "Select using wofi instead of fzf")
+    .action(disconnectFromDevice);
