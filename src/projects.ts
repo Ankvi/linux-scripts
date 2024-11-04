@@ -76,6 +76,9 @@ projects
             await Promise.all(
                 paths.map(async (path) => {
                     if (await hasModifiedFiles(path)) {
+                        logger.warn(
+                            `Repo ${path} has modified files. Skipping sync`,
+                        );
                         return "";
                     }
 
@@ -137,3 +140,24 @@ projects.command("select").action(async () => {
     }
     console.log(`cd ${selected}`);
 });
+
+projects
+    .command("git-prune")
+    .option("--tmux", "Use tmux sessions")
+    .action(async (opts: ProjectsOpts) => {
+        const paths = await getProjectFolders(opts);
+
+        await Promise.all(
+            paths.map(async (path) => {
+                try {
+                    await $.cwd(path)`git fetch --prune`.quiet();
+                } catch (error) {
+                    logger.warn({
+                        error,
+                        message: "Unable to prune repo",
+                        path,
+                    });
+                }
+            }),
+        );
+    });

@@ -8,8 +8,8 @@
     "type": "module",
     "devDependencies": {
         "@biomejs/biome": "^1.9.4",
-        "@types/bun": "^1.1.11",
-        "@types/node": "^22.7.7"
+        "@types/bun": "^1.1.13",
+        "@types/node": "^22.8.7"
     },
     "peerDependencies": {
         "typescript": "^5.6.3"
@@ -17,7 +17,7 @@
     "dependencies": {
         "commander": "^12.1.0",
         "dbus-next": "^0.10.2",
-        "winston": "^3.15.0"
+        "winston": "^3.16.0"
     },
     "scripts": {
         "lint:ts": "bun --bun tsc --noEmit",
