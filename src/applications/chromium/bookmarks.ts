@@ -100,7 +100,7 @@ bookmarks.command("open").action(async () => {
             .join("\n"),
     );
 
-    const result = (await $`fzf < ${input}`.text()).trim();
+    const result = (await $`wofi --dmenu < ${input}`.text()).trim();
     const id = result.split(": ")[0];
     const bookmark = map.get(id);
     if (bookmark) {
