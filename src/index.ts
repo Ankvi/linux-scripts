@@ -1,4 +1,5 @@
 import { Command, CommanderError } from "commander";
+import { applications } from "./applications";
 import { bluetooth } from "./bluetooth";
 import { dmenu } from "./dmenus";
 import { git } from "./git";
@@ -37,6 +38,7 @@ program.addCommand(windowManager);
 program.addCommand(sway);
 program.addCommand(logging);
 program.addCommand(bluetooth);
+program.addCommand(applications);
 
 program.hook("preAction", (command) => {
     const options = command.optsWithGlobals<GlobalOptions>();
