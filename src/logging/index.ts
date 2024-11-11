@@ -10,11 +10,17 @@ const logFile = `${process.env.HOME}/.cache/${pkg.name}/logs.log`;
 
 export const logger = createLogger({
     level: "info",
-    format: combine(errors({ stack: true }), timestamp(), json()),
     transports: [
-        new transports.Console(),
+        new transports.Console({
+            format: combine(
+                errors({ stack: true }),
+                timestamp(),
+                json({ space: 4 }),
+            ),
+        }),
         new transports.File({
             filename: `${process.env.HOME}/.cache/${pkg.name}/logs.log`,
+            format: combine(errors({ stack: true }), timestamp(), json()),
         }),
     ],
 });

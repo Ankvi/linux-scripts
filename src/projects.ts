@@ -97,7 +97,11 @@ projects
                     await $.cwd(path)`git pull`.quiet();
                 } catch (error) {
                     if (error instanceof Error) {
-                        logger.error("Unable to synchronize project", error);
+                        logger.error({
+                            message: "Unable to synchronize project",
+                            path,
+                            error,
+                        });
                     }
                 }
             }),
