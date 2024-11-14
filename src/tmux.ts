@@ -21,7 +21,17 @@ const cidFolder = `${elkjopFolder}/CID`;
 export const sessions: Session[] = [
     {
         name: "Flash",
-        folders: [{ path: `${elkjopFolder}/flash`, name: "flash" }],
+        folders: [
+            { path: `${elkjopFolder}/flash`, name: "flash" },
+            {
+                path: `${elkjopFolder}/flash-examples`,
+                name: "flash-examples",
+            },
+            {
+                path: `${elkjopFolder}/startertemplate`,
+                name: "startertemplate",
+            },
+        ],
     },
     {
         name: "CID",

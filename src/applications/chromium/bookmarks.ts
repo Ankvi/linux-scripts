@@ -64,7 +64,7 @@ async function getBookmarks() {
     return allBookmarks;
 }
 
-async function listBookmarks() {
+export async function listBookmarks() {
     const bookmarks = await getBookmarks();
     bookmarks.sort((a, b) => {
         const aId = Number.parseInt(a.id);
@@ -85,11 +85,7 @@ async function listBookmarks() {
     }
 }
 
-export const bookmarks = new Command("bookmarks");
-
-bookmarks.command("list").action(listBookmarks);
-
-bookmarks.command("open").action(async () => {
+export async function openBookmark() {
     const bookmarks = await getBookmarks();
 
     const map = new Map(bookmarks.map((bookmark) => [bookmark.id, bookmark]));
@@ -106,7 +102,13 @@ bookmarks.command("open").action(async () => {
     if (bookmark) {
         await $`xdg-open ${bookmark.url}`;
     }
-});
+}
+
+export const bookmarks = new Command("bookmarks");
+
+bookmarks.command("list").action(listBookmarks);
+
+bookmarks.command("open").action(openBookmark);
 
 if (import.meta.main) {
     await listBookmarks();
