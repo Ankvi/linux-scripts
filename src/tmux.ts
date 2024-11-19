@@ -57,6 +57,14 @@ export const sessions: Session[] = [
             { path: `${gitFolder}/Ankvi/neovim-config`, name: "neovim-config" },
             { path: `${gitFolder}/Ankvi/linux-scripts`, name: "linux-scripts" },
             { path: `${gitFolder}/Ankvi/timetracking`, name: "timetracking" },
+            {
+                path: `${gitFolder}/Ankvi/pulumi-transformer`,
+                name: "pulumi-transformer",
+            },
+            {
+                path: `${gitFolder}/Ankvi/pulumi-azure-native`,
+                name: "pulumi-azure-native",
+            },
             { path: `${Bun.env.HOME}/vaults`, name: "Obsidian Vaults" },
         ],
     },
