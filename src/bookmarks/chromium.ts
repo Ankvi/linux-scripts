@@ -1,5 +1,4 @@
 import { $ } from "bun";
-import { Command } from "commander";
 
 type BookmarksFile = {
     version: number;
@@ -30,6 +29,12 @@ type Bookmark = BookmarksEntry & {
     url: string;
 };
 
+const bookmarkFiles = {
+    brave: `${Bun.env.HOME}/.config/BraveSoftware/Brave-Browser/Default/Bookmarks`,
+} as const;
+
+export type Browsers = keyof typeof bookmarkFiles;
+
 function flattenFolders(folder: BookmarksFolder): Bookmark[] {
     const output: Bookmark[] = [];
     for (const child of folder.children) {
@@ -48,10 +53,8 @@ function flattenFolders(folder: BookmarksFolder): Bookmark[] {
     return output;
 }
 
-async function getBookmarks() {
-    const file = Bun.file(
-        `${Bun.env.HOME}/.config/BraveSoftware/Brave-Browser/Default/Bookmarks`,
-    );
+async function getBookmarks(browser: Browsers) {
+    const file = Bun.file(bookmarkFiles[browser]);
 
     const bookmarks = (await file.json()) as BookmarksFile;
 
@@ -64,8 +67,8 @@ async function getBookmarks() {
     return allBookmarks;
 }
 
-export async function listBookmarks() {
-    const bookmarks = await getBookmarks();
+export async function listBookmarks(browser: Browsers = "brave") {
+    const bookmarks = await getBookmarks(browser);
     bookmarks.sort((a, b) => {
         const aId = Number.parseInt(a.id);
         const bId = Number.parseInt(b.id);
@@ -81,12 +84,12 @@ export async function listBookmarks() {
         return 0;
     });
     for (const bookmark of bookmarks) {
-        console.log(`${bookmark.id}: ${bookmark.name}`);
+        console.log(`${bookmark.name}: ${bookmark.url}`);
     }
 }
 
-export async function openBookmark() {
-    const bookmarks = await getBookmarks();
+export async function openBookmark(browser: Browsers = "brave") {
+    const bookmarks = await getBookmarks(browser);
 
     const map = new Map(bookmarks.map((bookmark) => [bookmark.name, bookmark]));
 
@@ -103,12 +106,6 @@ export async function openBookmark() {
         await $`xdg-open ${bookmark.url}`;
     }
 }
-
-export const bookmarks = new Command("bookmarks");
-
-bookmarks.command("list").action(listBookmarks);
-
-bookmarks.command("open").action(openBookmark);
 
 if (import.meta.main) {
     await listBookmarks();
