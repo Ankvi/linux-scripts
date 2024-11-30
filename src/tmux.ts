@@ -3,6 +3,7 @@ import { $ } from "bun";
 import { Command } from "commander";
 import { getCurrentBranch } from "./git";
 import { logger } from "./logging";
+import { cidFolder, elkjopFolder, gitHubFolder } from "./projects/constants";
 
 type Folder = {
     path: string;
@@ -13,10 +14,6 @@ type Session = {
     name: string;
     folders: Folder[];
 };
-
-const gitFolder = `${Bun.env.HOME}/git/github.com`;
-const elkjopFolder = `${gitFolder}/elkjopnordic`;
-const cidFolder = `${elkjopFolder}/CID`;
 
 export const sessions: Session[] = [
     {
@@ -53,16 +50,25 @@ export const sessions: Session[] = [
     {
         name: "Private",
         folders: [
-            { path: `${gitFolder}/Ankvi/dotfiles`, name: "dotfiles" },
-            { path: `${gitFolder}/Ankvi/neovim-config`, name: "neovim-config" },
-            { path: `${gitFolder}/Ankvi/linux-scripts`, name: "linux-scripts" },
-            { path: `${gitFolder}/Ankvi/timetracking`, name: "timetracking" },
+            { path: `${gitHubFolder}/Ankvi/dotfiles`, name: "dotfiles" },
             {
-                path: `${gitFolder}/Ankvi/pulumi-transformer`,
+                path: `${gitHubFolder}/Ankvi/neovim-config`,
+                name: "neovim-config",
+            },
+            {
+                path: `${gitHubFolder}/Ankvi/linux-scripts`,
+                name: "linux-scripts",
+            },
+            {
+                path: `${gitHubFolder}/Ankvi/timetracking`,
+                name: "timetracking",
+            },
+            {
+                path: `${gitHubFolder}/Ankvi/pulumi-transformer`,
                 name: "pulumi-transformer",
             },
             {
-                path: `${gitFolder}/Ankvi/pulumi-azure-native`,
+                path: `${gitHubFolder}/Ankvi/pulumi-azure-native`,
                 name: "pulumi-azure-native",
             },
             { path: `${Bun.env.HOME}/vaults`, name: "Obsidian Vaults" },
