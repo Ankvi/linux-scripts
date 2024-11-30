@@ -81,11 +81,14 @@ async function synchronizeProjects(opts: ProjectsOpts) {
 
     logger.info(`Synchronizing ${projectsToBeSynchronized.length} projects`);
 
+    const failedSyncs: string[] = [];
+
     await Promise.all(
         projectsToBeSynchronized.map(async (path) => {
             try {
                 await $.cwd(path)`git pull`.quiet();
             } catch (error) {
+                failedSyncs.push(path);
                 if (error instanceof Error) {
                     const errorMessage =
                         "stderr" in error ? error.stderr : error.message;
@@ -98,6 +101,13 @@ async function synchronizeProjects(opts: ProjectsOpts) {
             }
         }),
     );
+
+    if (failedSyncs.length) {
+        logger.warn({
+            message: "Some synchronizations failed",
+            projects: failedSyncs,
+        });
+    }
 }
 
 projects
