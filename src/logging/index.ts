@@ -1,6 +1,5 @@
 import { createLogger, format, transports } from "winston";
 
-import { $ } from "bun";
 import { Command } from "commander";
 import pkg from "../../package.json";
 

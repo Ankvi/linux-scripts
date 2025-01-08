@@ -9,6 +9,7 @@ import { install as installPackages } from "./packages";
 import { projects } from "./projects";
 import { installLinuxScripts } from "./self-installer";
 import { sway } from "./sway";
+import { shutdown } from "./system";
 import { install as installTemplates } from "./templates";
 import { tmux } from "./tmux";
 import type { GlobalOptions } from "./types";
@@ -29,6 +30,8 @@ program
     .action(installTemplates);
 
 program.command("install-project").action(installLinuxScripts);
+
+program.command("system-shutdown").action(shutdown);
 
 program.addCommand(dmenu);
 program.addCommand(projects);
