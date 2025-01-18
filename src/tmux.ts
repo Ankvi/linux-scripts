@@ -64,10 +64,6 @@ export const sessions: Session[] = [
                 name: "timetracking",
             },
             {
-                path: `${gitHubFolder}/Ankvi/pulumi-transformer`,
-                name: "pulumi-transformer",
-            },
-            {
                 path: `${gitHubFolder}/Ankvi/pulumi-azure-native`,
                 name: "pulumi-azure-native",
             },
