@@ -1,4 +1,4 @@
-import { Command, CommanderError } from "commander";
+import { Command, CommanderError, program } from "commander";
 import { bluetooth } from "./bluetooth";
 import { bookmarks } from "./bookmarks";
 import { dmenu } from "./dmenus";
@@ -14,8 +14,9 @@ import { install as installTemplates } from "./templates";
 import { tmux } from "./tmux";
 import type { GlobalOptions } from "./types";
 import { windowManager } from "./window-manager";
-
-const program = new Command("linux-scripts");
+import "./azure";
+// const program = new Command("linux-scripts");
+program.name("linux-scripts");
 
 program.option("-v, --verbose");
 

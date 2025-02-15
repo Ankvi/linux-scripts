@@ -15,6 +15,7 @@
         "typescript": "^5.7.2"
     },
     "dependencies": {
+        "@azure/identity": "^4.6.0",
         "commander": "^12.1.0",
         "dbus-next": "^0.10.2",
         "winston": "^3.17.0"
