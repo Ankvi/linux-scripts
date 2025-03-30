@@ -8,15 +8,15 @@
     "type": "module",
     "devDependencies": {
         "@biomejs/biome": "^1.9.4",
-        "@types/bun": "^1.1.14",
-        "@types/node": "^22.10.1"
+        "@types/bun": "^1.2.8",
+        "@types/node": "^22.13.14"
     },
     "peerDependencies": {
-        "typescript": "^5.7.2"
+        "typescript": "^5.8.2"
     },
     "dependencies": {
-        "@azure/identity": "^4.6.0",
-        "commander": "^12.1.0",
+        "@azure/identity": "^4.8.0",
+        "commander": "^13.1.0",
         "dbus-next": "^0.10.2",
         "winston": "^3.17.0"
     },
