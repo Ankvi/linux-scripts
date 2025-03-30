@@ -3,7 +3,7 @@ import { $ } from "bun";
 import { Command } from "commander";
 import { getCurrentBranch } from "./git";
 import { logger } from "./logging";
-import { cidFolder, elkjopFolder, gitHubFolder } from "./projects/constants";
+import { cidFolder, flashFolder, privateFolder } from "./projects/constants";
 
 type Folder = {
     path: string;
@@ -19,13 +19,13 @@ export const sessions: Session[] = [
     {
         name: "Flash",
         folders: [
-            { path: `${elkjopFolder}/flash`, name: "flash" },
+            { path: `${flashFolder}/flash`, name: "flash" },
             {
-                path: `${elkjopFolder}/flash-examples`,
+                path: `${flashFolder}/flash-examples`,
                 name: "flash-examples",
             },
             {
-                path: `${elkjopFolder}/startertemplate`,
+                path: `${flashFolder}/startertemplate`,
                 name: "startertemplate",
             },
         ],
@@ -50,21 +50,21 @@ export const sessions: Session[] = [
     {
         name: "Private",
         folders: [
-            { path: `${gitHubFolder}/Ankvi/dotfiles`, name: "dotfiles" },
+            { path: `${privateFolder}/dotfiles`, name: "dotfiles" },
             {
-                path: `${gitHubFolder}/Ankvi/neovim-config`,
+                path: `${privateFolder}/neovim-config`,
                 name: "neovim-config",
             },
             {
-                path: `${gitHubFolder}/Ankvi/linux-scripts`,
+                path: `${privateFolder}/linux-scripts`,
                 name: "linux-scripts",
             },
             {
-                path: `${gitHubFolder}/Ankvi/timetracking`,
+                path: `${privateFolder}/timetracking`,
                 name: "timetracking",
             },
             {
-                path: `${gitHubFolder}/Ankvi/pulumi-azure-native`,
+                path: `${privateFolder}/pulumi-azure-native`,
                 name: "pulumi-azure-native",
             },
             { path: `${Bun.env.HOME}/vaults`, name: "Obsidian Vaults" },
