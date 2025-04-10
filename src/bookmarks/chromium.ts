@@ -31,6 +31,7 @@ type Bookmark = BookmarksEntry & {
 
 const bookmarkFiles = {
     brave: `${Bun.env.HOME}/.config/BraveSoftware/Brave-Browser/Default/Bookmarks`,
+    chrome: `${Bun.env.HOME}/.config/google-chrome/Default/Bookmarks`,
 } as const;
 
 export type Browsers = keyof typeof bookmarkFiles;
@@ -99,7 +100,7 @@ export async function openBookmark(browser: Browsers = "brave") {
             .join("\n"),
     );
 
-    const result = (await $`wofi --dmenu < ${input}`.text()).trim();
+    const result = (await $`rofi -dmenu < ${input}`.text()).trim();
     const name = result.split(": ")[0];
     const bookmark = map.get(name);
     if (bookmark) {

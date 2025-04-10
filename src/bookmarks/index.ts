@@ -12,7 +12,8 @@ bookmarks.command("list <browser>").action(async (browser: Browsers) => {
             await firefox.getBookmarks(browser);
             break;
         }
-        case "brave": {
+        case "brave":
+        case "chrome": {
             await chromium.listBookmarks(browser);
             break;
         }
@@ -25,7 +26,9 @@ bookmarks.command("open <browser>").action(async (browser: Browsers) => {
             await firefox.getBookmarks(browser);
             break;
         }
-        case "brave": {
+
+        case "brave":
+        case "chrome": {
             await chromium.openBookmark(browser);
             break;
         }
