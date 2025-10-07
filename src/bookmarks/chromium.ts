@@ -1,4 +1,5 @@
 import { $ } from "bun";
+import { type Browser, getConfig } from "../browsers/chromium/browsers";
 
 type BookmarksFile = {
     version: number;
@@ -29,13 +30,6 @@ type Bookmark = BookmarksEntry & {
     url: string;
 };
 
-const bookmarkFiles = {
-    brave: `${Bun.env.HOME}/.config/BraveSoftware/Brave-Browser/Default/Bookmarks`,
-    chrome: `${Bun.env.HOME}/.config/google-chrome/Default/Bookmarks`,
-} as const;
-
-export type Browsers = keyof typeof bookmarkFiles;
-
 function flattenFolders(folder: BookmarksFolder): Bookmark[] {
     const output: Bookmark[] = [];
     for (const child of folder.children) {
@@ -54,8 +48,9 @@ function flattenFolders(folder: BookmarksFolder): Bookmark[] {
     return output;
 }
 
-async function getBookmarks(browser: Browsers) {
-    const file = Bun.file(bookmarkFiles[browser]);
+async function getBookmarks(browser: Browser) {
+    const { bookmarkFile } = getConfig(browser);
+    const file = Bun.file(bookmarkFile);
 
     const bookmarks = (await file.json()) as BookmarksFile;
 
@@ -68,11 +63,11 @@ async function getBookmarks(browser: Browsers) {
     return allBookmarks;
 }
 
-export async function listBookmarks(browser: Browsers = "brave") {
+export async function listBookmarks(browser: Browser = "brave") {
     const bookmarks = await getBookmarks(browser);
     bookmarks.sort((a, b) => {
-        const aId = Number.parseInt(a.id);
-        const bId = Number.parseInt(b.id);
+        const aId = Number.parseInt(a.id, 10);
+        const bId = Number.parseInt(b.id, 10);
 
         if (aId < bId) {
             return -1;
@@ -89,7 +84,7 @@ export async function listBookmarks(browser: Browsers = "brave") {
     }
 }
 
-export async function openBookmark(browser: Browsers = "brave") {
+export async function openBookmark(browser: Browser = "brave") {
     const bookmarks = await getBookmarks(browser);
 
     const map = new Map(bookmarks.map((bookmark) => [bookmark.name, bookmark]));

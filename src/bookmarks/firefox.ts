@@ -1,13 +1,9 @@
 import { Database } from "bun:sqlite";
+import { type Browser, getConfig } from "../browsers/firefox/browsers";
 
-export const bookmarkFiles = {
-    firefox: `${Bun.env.HOME}/.mozilla/firefox/ko0l2ysk.default-release/places.sqlite`,
-} as const;
-
-export type Browsers = keyof typeof bookmarkFiles;
-
-export function getBookmarks(browser: Browsers = "firefox") {
-    const db = new Database(bookmarkFiles[browser], { readonly: true });
+export function getBookmarks(browser: Browser = "firefox") {
+    const { bookmarkFile } = getConfig(browser);
+    const db = new Database(bookmarkFile, { readonly: true });
 
     const result = db.query(
         "SELECT name FROM sqlite_schema WHERE type = 'table' AND name NOT LIKE 'sqlite_%'",

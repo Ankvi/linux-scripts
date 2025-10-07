@@ -7,18 +7,18 @@
     },
     "type": "module",
     "devDependencies": {
-        "@biomejs/biome": "^1.9.4",
-        "@types/bun": "^1.2.8",
-        "@types/node": "^22.13.14"
+        "@biomejs/biome": "^2.2.5",
+        "@types/bun": "^1.2.23",
+        "@types/node": "^24.7.0"
     },
     "peerDependencies": {
-        "typescript": "^5.8.2"
+        "typescript": "^5.9.3"
     },
     "dependencies": {
-        "@azure/identity": "^4.8.0",
-        "commander": "^13.1.0",
+        "@azure/identity": "^4.12.0",
+        "commander": "^14.0.1",
         "dbus-next": "^0.10.2",
-        "winston": "^3.17.0"
+        "winston": "^3.18.3"
     },
     "scripts": {
         "lint:ts": "bun --bun tsc --noEmit",

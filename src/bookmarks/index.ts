@@ -1,36 +1,28 @@
 import { Command } from "commander";
+import { type Browser, validateOrGetDefaultBrowser } from "../browsers";
+import { isChromium } from "../browsers/chromium/browsers";
+import { isFirefox } from "../browsers/firefox/browsers";
 import * as chromium from "./chromium";
 import * as firefox from "./firefox";
 
-type Browsers = firefox.Browsers | chromium.Browsers;
-
 export const bookmarks = new Command("bookmarks");
 
-bookmarks.command("list <browser>").action(async (browser: Browsers) => {
-    switch (browser) {
-        case "firefox": {
-            await firefox.getBookmarks(browser);
-            break;
-        }
-        case "brave":
-        case "chrome": {
-            await chromium.listBookmarks(browser);
-            break;
-        }
+bookmarks.command("list [browser]").action(async (browser?: Browser) => {
+    browser = await validateOrGetDefaultBrowser(browser);
+    if (isChromium(browser)) {
+        return await chromium.listBookmarks(browser);
+    }
+    if (isFirefox(browser)) {
+        return await firefox.getBookmarks(browser);
     }
 });
 
-bookmarks.command("open <browser>").action(async (browser: Browsers) => {
-    switch (browser) {
-        case "firefox": {
-            await firefox.getBookmarks(browser);
-            break;
-        }
-
-        case "brave":
-        case "chrome": {
-            await chromium.openBookmark(browser);
-            break;
-        }
+bookmarks.command("open [browser]").action(async (browser?: Browser) => {
+    browser = await validateOrGetDefaultBrowser(browser);
+    if (isChromium(browser)) {
+        return await chromium.openBookmark(browser);
+    }
+    if (isFirefox(browser)) {
+        return await firefox.getBookmarks(browser);
     }
 });
