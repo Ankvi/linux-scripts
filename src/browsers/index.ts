@@ -1,12 +1,24 @@
 import { $ } from "bun";
-import { Browser as ChromiumBrowser } from "./chromium/browsers";
-import { Browser as FirefoxBrowser } from "./firefox/browsers";
+import { Command } from "commander";
+import {
+    Browser as ChromiumBrowser,
+    executables as chromiumExecutables,
+} from "./chromium/browsers";
+import {
+    Browser as FirefoxBrowser,
+    executables as firefoxExecutables,
+} from "./firefox/browsers";
 
 export type Browser = ChromiumBrowser | FirefoxBrowser;
 const browsers = [
     ...Object.values(ChromiumBrowser),
     ...Object.values(FirefoxBrowser),
 ];
+
+const executables = {
+    ...chromiumExecutables,
+    ...firefoxExecutables,
+};
 
 function isValidBrowser(browser: string): browser is Browser {
     return browsers.some((b) => b === browser);
@@ -34,3 +46,10 @@ export async function getDefaultBrowser(): Promise<Browser> {
     }
     return defaultBrowser;
 }
+
+export const command = new Command("browsers");
+
+command.command("open").action(async () => {
+    const browser = await getDefaultBrowser();
+    await $`gtk-launch ${browser}.desktop`;
+});
