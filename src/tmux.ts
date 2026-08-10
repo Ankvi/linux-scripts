@@ -3,7 +3,7 @@ import { $ } from "bun";
 import { Command } from "commander";
 import { getCurrentBranch } from "./git";
 import { logger } from "./logging";
-import { cidFolder, flashFolder, privateFolder } from "./projects/constants";
+import { flashFolder, privateFolder } from "./projects/constants";
 
 type Folder = {
     path: string;
@@ -18,34 +18,7 @@ type Session = {
 export const sessions: Session[] = [
     {
         name: "Flash",
-        folders: [
-            { path: `${flashFolder}/flash`, name: "flash" },
-            {
-                path: `${flashFolder}/flash-examples`,
-                name: "flash-examples",
-            },
-            {
-                path: `${flashFolder}/startertemplate`,
-                name: "startertemplate",
-            },
-        ],
-    },
-    {
-        name: "CID",
-        folders: [
-            { path: `${cidFolder}/IdentityService`, name: "IdentityService" },
-            { path: `${cidFolder}/IdentityMasterService`, name: "IMS" },
-            { path: `${cidFolder}/customer-identity-admin`, name: "CIA" },
-            {
-                path: `${cidFolder}/AzureADB2CService`,
-                name: "AzureADB2CService",
-            },
-            {
-                path: `${cidFolder}/azure-ad-b2c-policies`,
-                name: "ADB2C Policies",
-            },
-            { path: `${cidFolder}/azure-ad-b2c-ui`, name: "ADB2C UI" },
-        ],
+        folders: [{ path: `${flashFolder}/flash`, name: "flash" }],
     },
     {
         name: "Private",
