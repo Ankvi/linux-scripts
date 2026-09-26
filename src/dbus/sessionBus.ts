@@ -1,4 +1,5 @@
 import * as dbus from "dbus-next";
+
 let sessionBus: dbus.MessageBus | undefined;
 
 export const DBUS_INTERFACE = "org.freedesktop.DBus";
