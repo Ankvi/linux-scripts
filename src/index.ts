@@ -16,6 +16,8 @@ import { tmux } from "./tmux";
 import type { GlobalOptions } from "./types";
 import { windowManager } from "./window-manager";
 import "./azure";
+import { media } from "./dbus/mediaPlayer";
+
 // const program = new Command("linux-scripts");
 program.name("linux-scripts");
 
@@ -45,6 +47,7 @@ program.addCommand(logging);
 program.addCommand(bluetooth);
 program.addCommand(bookmarks);
 program.addCommand(browsers);
+program.addCommand(media);
 
 program.hook("preAction", (command) => {
     const options = command.optsWithGlobals<GlobalOptions>();

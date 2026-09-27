@@ -11,7 +11,7 @@ class MediaPlayer {
     private static _spotify: MediaPlayer;
 
     static async getBrave() {
-        const sessionBus = getSessionBus();
+        const _sessionBus = getSessionBus();
     }
 
     static async getSpotify() {
@@ -74,7 +74,23 @@ class MediaPlayer {
 export const media = new Command("media");
 
 const spotify = media.command("spotify");
-spotify.command("play").action(async () => {});
+spotify.command("play-pause").action(async () => {
+    const player = await MediaPlayer.getSpotify();
+    await player.playPause();
+    getSessionBus().disconnect();
+});
+
+spotify.command("next").action(async () => {
+    const player = await MediaPlayer.getSpotify();
+    await player.next();
+    getSessionBus().disconnect();
+});
+
+spotify.command("previous").action(async () => {
+    const player = await MediaPlayer.getSpotify();
+    await player.previous();
+    getSessionBus().disconnect();
+});
 
 if (import.meta.main) {
     const player = await MediaPlayer.getSpotify();
